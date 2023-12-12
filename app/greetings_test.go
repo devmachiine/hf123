@@ -10,3 +10,30 @@ func TestAdd(t *testing.T) {
 		t.Errorf("Add(%d, %d) = %d; want 8", a, b, result)
 	}
 }
+
+func TestValidPayment(t *testing.T) {
+	customerPayments := []int{5, 10, 5, 20}
+
+	accepted := AcceptPayments(customerPayments)
+	if !accepted {
+		t.Errorf("expected valid customer payments %v not accepted", customerPayments)
+	}
+}
+
+func TestWrongPaymentNotEnoughChange(t *testing.T) {
+	customerPayments := []int{5, 20, 5, 20}
+
+	accepted := AcceptPayments(customerPayments)
+	if accepted {
+		t.Errorf("expected invalid customer payments %v not accepted", customerPayments)
+	}
+}
+
+func TestWrongPaymentNoCorrectChange(t *testing.T) {
+	customerPayments := []int{5, 10, 10}
+
+	accepted := AcceptPayments(customerPayments)
+	if accepted {
+		t.Errorf("expected invalid customer payments %v not accepted", customerPayments)
+	}
+}

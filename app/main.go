@@ -25,11 +25,7 @@ func AcceptPayments(customerPayments []int) bool {
 			return false
 		}
 
-		//remove the bill(s) from avaliable change
-
-		for bill := range change {
-			avaliableChange[bill] -= 1
-		}
+		avaliableChange = change
 	}
 
 	return true
@@ -37,8 +33,16 @@ func AcceptPayments(customerPayments []int) bool {
 
 func composeChange(amount int, avaliableBills map[int]int) (map[int]int, bool) {
 
+	if amount == 0 {
+		return avaliableBills, true
+	}
+
 	for bill, n := range avaliableBills {
-		if (bill == amount) && n > 0 {
+		if n == 0 {
+			continue
+		}
+
+		if bill == amount {
 
 			avaliableBills[bill] -= 1
 
@@ -56,4 +60,6 @@ func composeChange(amount int, avaliableBills map[int]int) (map[int]int, bool) {
 
 		return composeChange(amount, avaliableBills)
 	}
+
+	return avaliableBills, false
 }
